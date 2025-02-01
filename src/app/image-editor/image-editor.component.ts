@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { fabric } from 'fabric';
+import { fabric } from 'fabric-pure-browser';
 import { ImageProcessorService } from '../../Services/image-processor.service';
 
 @Component({
