@@ -1,0 +1,53 @@
+<canvas id="canvas"></canvas>
+
+<div class="floating-toolbar" draggable="true">
+  <div class="toolbar-handle">⋮⋮</div>
+  
+  <!-- Drawing controls -->
+  <div class="drawing-controls">
+    <button (click)="toggleDrawingMode()" [class.active]="isDrawingMode">
+      {{ isDrawingMode ? 'Exit Drawing' : 'Draw' }}
+    </button>
+    
+    <div class="brush-controls" *ngIf="isDrawingMode">
+      <label>
+        Size:
+        <input 
+          type="range" 
+          [value]="brushSize" 
+          (input)="updateBrushSize($event)" 
+          min="1" 
+          max="50"
+        >
+      </label>
+      
+      <label>
+        Color:
+        <input 
+          type="color" 
+          [value]="brushColor" 
+          (input)="updateBrushColor($event)"
+        >
+      </label>
+    </div>
+  </div>
+
+  <!-- Existing buttons -->
+  <button (click)="addRectangle()">Rectangle</button>
+  <button (click)="addCircle()">Circle</button>
+  <button (click)="addText()">Text</button>
+  <button (click)="deleteSelected()">Delete</button>
+  <button (click)="clearCanvas()">Clear All</button>
+  <button (click)="applyGrayscaleEffect()">Grayscale</button>
+  
+  <input 
+    type="file" 
+    id="imageUpload" 
+    (change)="onImageUpload($event)" 
+    accept="image/*" 
+    style="display: none"
+  >
+  <button (click)="triggerFileInput()">
+    Upload Image
+  </button>
+</div>
