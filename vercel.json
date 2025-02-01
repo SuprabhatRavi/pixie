@@ -6,15 +6,22 @@
         "config": {
           "distDir": "dist/pixie",
           "buildCommand": "npm run build:wasm && npm run build",
-          "installCommand": "npm install && npm install -g wasm-pack",
+          "installCommand": "curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && npm install",
           "rustVersion": "stable"
         }
       }
     ],
     "routes": [
         {
+          "src": "/(.*)\\.wasm$",
+          "headers": {
+            "content-type": "application/wasm"
+          },
+          "continue": true
+        },
+        {
           "src": "/(.*)",
           "dest": "/"
         }
     ]
-  }
+}
