@@ -6,7 +6,7 @@
         "config": {
           "distDir": "dist/pixie",
           "buildCommand": "node vercel-build.js",
-          "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && npm install",
+          "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
           "rustVersion": "stable"
         }
       }

@@ -2,8 +2,6 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-console.log("=== Vercel Build Script STARTING ===");
-
 function logSection(message) {
   console.log('\n-----------------------------------');
   console.log(message);
@@ -14,7 +12,13 @@ function executeCommand(command, message) {
   logSection(message);
   console.log(`Executing: ${command}`);
   try {
-    execSync(command, { stdio: 'inherit', env: { ...process.env, RUST_BACKTRACE: '1' } });
+    // Add cargo and local bin to PATH
+    const env = {
+      ...process.env,
+      PATH: `${process.env.PATH}:${process.env.HOME}/.cargo/bin:${process.env.HOME}/.local/bin`,
+      RUST_BACKTRACE: '1'
+    };
+    execSync(command, { stdio: 'inherit', env });
     console.log(`✅ ${message} completed successfully`);
   } catch (error) {
     console.error(`❌ ${message} failed:`, error);
@@ -23,15 +27,20 @@ function executeCommand(command, message) {
 }
 
 try {
-  // Log current directory and list files
+  // Log PATH and verify installations
+  logSection('Environment Check');
+  console.log('PATH:', process.env.PATH);
+  executeCommand('which wasm-pack', 'Check wasm-pack location');
+  executeCommand('wasm-pack --version', 'Check wasm-pack version');
+  executeCommand('rustc --version', 'Check rust version');
+
+  // Rest of your build script remains the same...
   logSection('Current directory contents');
   console.log('Current directory:', process.cwd());
   console.log('Directory contents:', fs.readdirSync('.'));
 
-  // Build WASM with verbose logging
   executeCommand('wasm-pack build --target web ./wasm --verbose', 'WASM Build');
 
-  // List wasm/pkg contents
   if (fs.existsSync('./wasm/pkg')) {
     logSection('WASM pkg directory contents');
     console.log('wasm/pkg contents:', fs.readdirSync('./wasm/pkg'));
@@ -39,10 +48,8 @@ try {
     console.warn('⚠️ wasm/pkg directory not found after build');
   }
 
-  // Copy WASM files
   executeCommand('node scripts/copy-wasm-prod.js', 'Copy WASM files');
 
-  // Verify src/assets/wasm contents
   if (fs.existsSync('./src/assets/wasm')) {
     logSection('src/assets/wasm directory contents');
     console.log('Contents:', fs.readdirSync('./src/assets/wasm'));
@@ -50,10 +57,8 @@ try {
     console.warn('⚠️ src/assets/wasm directory not found after copy');
   }
 
-  // Build Angular
   executeCommand('ng build --verbose', 'Angular Build');
 
-  // Verify final dist directory
   if (fs.existsSync('./dist/pixie/assets/wasm')) {
     logSection('Final dist/pixie/assets/wasm contents');
     console.log('Contents:', fs.readdirSync('./dist/pixie/assets/wasm'));
