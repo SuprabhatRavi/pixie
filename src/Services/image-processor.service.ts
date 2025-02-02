@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import init, {  apply_grayscale } from '../assets/wasm/image_editor_backend';
+import init, {  apply_grayscale } from '../assets/wasm/image_editor_backend.js';
 
 @Injectable({
   providedIn: 'root'
