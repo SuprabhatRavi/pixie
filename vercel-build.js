@@ -12,13 +12,7 @@ function executeCommand(command, message) {
   logSection(message);
   console.log(`Executing: ${command}`);
   try {
-    // Add cargo and local bin to PATH
-    const env = {
-      ...process.env,
-      PATH: `${process.env.PATH}:${process.env.HOME}/.cargo/bin:${process.env.HOME}/.local/bin`,
-      RUST_BACKTRACE: '1'
-    };
-    execSync(command, { stdio: 'inherit', env });
+    execSync(command, { stdio: 'inherit', env: { ...process.env, RUST_BACKTRACE: '1' } });
     console.log(`✅ ${message} completed successfully`);
   } catch (error) {
     console.error(`❌ ${message} failed:`, error);
@@ -27,18 +21,20 @@ function executeCommand(command, message) {
 }
 
 try {
-  // Log PATH and verify installations
+  // Install Rust
+  executeCommand('curl -sSf https://sh.rustup.rs | sh -s -- -y', 'Install Rust');
+  executeCommand(`. "$HOME/.cargo/env"`, 'Source Rust environment');
+  
+  // Install wasm-pack
+  executeCommand('curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh', 'Install wasm-pack');
+  
+  // Log environment for debugging
   logSection('Environment Check');
   console.log('PATH:', process.env.PATH);
-  executeCommand('which wasm-pack', 'Check wasm-pack location');
+  executeCommand('rustc --version', 'Check Rust version');
   executeCommand('wasm-pack --version', 'Check wasm-pack version');
-  executeCommand('rustc --version', 'Check rust version');
 
-  // Rest of your build script remains the same...
-  logSection('Current directory contents');
-  console.log('Current directory:', process.cwd());
-  console.log('Directory contents:', fs.readdirSync('.'));
-
+  // Build WASM
   executeCommand('wasm-pack build --target web ./wasm --verbose', 'WASM Build');
 
   if (fs.existsSync('./wasm/pkg')) {
@@ -48,6 +44,7 @@ try {
     console.warn('⚠️ wasm/pkg directory not found after build');
   }
 
+  // Copy WASM files
   executeCommand('node scripts/copy-wasm-prod.js', 'Copy WASM files');
 
   if (fs.existsSync('./src/assets/wasm')) {
@@ -57,6 +54,7 @@ try {
     console.warn('⚠️ src/assets/wasm directory not found after copy');
   }
 
+  // Build Angular
   executeCommand('ng build --verbose', 'Angular Build');
 
   if (fs.existsSync('./dist/pixie/assets/wasm')) {
