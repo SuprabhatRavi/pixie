@@ -9,42 +9,31 @@ process.on('unhandledRejection', error => {
 });
 
 try {
-  // Build WASM
-  console.log('Building WASM...');
-  execSync('wasm-pack build --target web ./wasm', { stdio: 'inherit' });
+  // First, run the build:wasm script from package.json
+  console.log('Running build:wasm script...');
+  execSync('npm run build:wasm', { stdio: 'inherit' });
 
-  // Create assets directory if it doesn't exist
-  const assetsDir = path.join('src', 'assets', 'wasm');
-  if (!fs.existsSync(assetsDir)) {
-    fs.mkdirSync(assetsDir, { recursive: true });
-  }
-
-  // Copy WASM files to assets
-  console.log('Copying WASM files to assets...');
-  const wasmPkgDir = path.join('wasm', 'pkg');
-  fs.readdirSync(wasmPkgDir).forEach(file => {
-    fs.copyFileSync(
-      path.join(wasmPkgDir, file),
-      path.join(assetsDir, file)
-    );
-  });
-
-  // Run Angular build
+  // Then run Angular build
   console.log('Building Angular application...');
   execSync('ng build', { stdio: 'inherit' });
 
-  // Copy WASM files to distribution
+  // Ensure WASM files are in the dist folder
   const distDir = path.join('dist', 'pixie', 'assets', 'wasm');
+  const srcWasmDir = path.join('src', 'assets', 'wasm');
+  
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
   }
   
-  fs.readdirSync(assetsDir).forEach(file => {
-    fs.copyFileSync(
-      path.join(assetsDir, file),
-      path.join(distDir, file)
-    );
-  });
+  // Copy WASM files from src/assets/wasm to dist/pixie/assets/wasm
+  if (fs.existsSync(srcWasmDir)) {
+    fs.readdirSync(srcWasmDir).forEach(file => {
+      fs.copyFileSync(
+        path.join(srcWasmDir, file),
+        path.join(distDir, file)
+      );
+    });
+  }
 
   console.log('Build completed successfully!');
 } catch (error) {
