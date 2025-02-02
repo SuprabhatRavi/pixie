@@ -2,6 +2,8 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+console.log("=== Vercel Build Script STARTING ===");
+
 function logSection(message) {
   console.log('\n-----------------------------------');
   console.log(message);
