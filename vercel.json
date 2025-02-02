@@ -2,7 +2,7 @@
     "builds": [
       {
         "src": "package.json",
-        "use": "@vercel/static-build",
+        "use": "@vercel/node",
         "config": {
           "distDir": "dist/pixie",
           "buildCommand": "node vercel-build.js",
