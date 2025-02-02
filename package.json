@@ -5,6 +5,7 @@
     "ng": "ng",
     "build": "ng build",
     "vercel-build": "node vercel-build.js",
+    "copy-wasm-prod": "node scripts/copy-wasm-prod.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:wasm": "wasm-pack build --target web ./wasm && node scripts/copy-wasm.js",
