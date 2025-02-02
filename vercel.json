@@ -5,8 +5,8 @@
         "use": "@vercel/static-build",
         "config": {
           "distDir": "dist/pixie",
-          "buildCommand": "node vercel-build.js",
-          "installCommand": "curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && npm install && npm run build:wasm",
+          "buildCommand": "npm run build:wasm:prod && ng build",
+          "installCommand": "curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && npm install",
           "rustVersion": "stable"
         }
       }
