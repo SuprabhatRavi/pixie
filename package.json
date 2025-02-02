@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "node vercel-build.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:wasm": "wasm-pack build --target web ./wasm && node scripts/copy-wasm.js",
