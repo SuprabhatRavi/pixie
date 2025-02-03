@@ -12,6 +12,7 @@ function executeCommand(command, message) {
   if (message) logSection(message);
   console.log(`Executing: ${command}`);
   try {
+    process.env.HOME = '/root';
     execSync(command, { stdio: 'inherit' });
     console.log(`✅ ${message || command} completed successfully`);
   } catch (error) {
