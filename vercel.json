@@ -2,7 +2,7 @@
     "builds": [
       {
         "src": "package.json",
-        "use": "@vercel/static-build",
+        "use": "@vercel/node",
         "config": {
           "distDir": "dist/pixie",
           "buildCommand": "node vercel-build.js",
@@ -10,6 +10,10 @@
           "rustVersion": "stable",
           "maxLambdaSize": "50mb"
         }
+      },
+      {
+        "src": "dist/pixie/browser/**",
+        "use": "@vercel/static"
       }
     ],
     "routes": [
@@ -28,12 +32,11 @@
         },
         "continue": true
       },
-      {
-        "handle": "filesystem"
-      },
+      { "handle": "filesystem" },
       {
         "src": "/(.*)",
         "dest": "/index.html"
       }
     ]
   }
+  
