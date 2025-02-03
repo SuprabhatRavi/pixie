@@ -33,7 +33,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "/"
+        "dest": "/dist/pixie/index.html"
       }
     ]
   }
