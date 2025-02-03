@@ -69,6 +69,13 @@ try {
         console.warn('⚠️ dist/pixie/assets/wasm directory not found in final build');
     }
 
+    if (fs.existsSync('./dist/pixie')) {
+        logSection('Final dist/pixie');
+        console.log('Contents:', fs.readdirSync('./dist/pixie'));
+    } else {
+        console.warn('⚠️ dist/pixie directory not found in final build');
+    }
+
     logSection('Build completed successfully! 🎉');
 } catch (error) {
     logSection('Build failed! ❌');
