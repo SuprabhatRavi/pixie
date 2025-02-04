@@ -1,16 +1,7 @@
 {
+    "buildCommand": "node vercel-build.js",
+    "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
     "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node",
-        "config": {
-          "distDir": "dist/pixie",
-          "buildCommand": "node vercel-build.js",
-          "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
-          "rustVersion": "stable",
-          "maxLambdaSize": "50mb"
-        }
-      },
       {
         "src": "dist/pixie/browser/**",
         "use": "@vercel/static"
@@ -35,8 +26,7 @@
       { "handle": "filesystem" },
       {
         "src": "/(.*)",
-        "dest": "/index.html"
+        "dest": "/dist/pixie/browser/index.html"
       }
     ]
   }
-  
