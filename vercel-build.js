@@ -76,6 +76,12 @@ try {
         console.warn('⚠️ dist/pixie directory not found in final build');
     }
 
+    if (fs.existsSync('./dist/pixie/browser')) {
+        console.log('Contents of dist/pixie/browser:', fs.readdirSync('./dist/pixie/browser'));
+    } else {
+        console.warn('⚠️ dist/pixie directory not found in final build');
+    }
+
     logSection('Build completed successfully! 🎉');
 } catch (error) {
     logSection('Build failed! ❌');
