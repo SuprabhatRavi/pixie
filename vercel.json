@@ -4,7 +4,7 @@
         "src": "package.json",
         "use": "@vercel/static",
         "config": {
-          "distDir": "dist/pixie",
+          "distDir": "dist/pixie/browser",
           "buildCommand": "node vercel-build.js",
           "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
           "rustVersion": "stable",
@@ -13,25 +13,10 @@
       }
     ],
     "routes": [
-      {
-        "src": "/(.*)\\.wasm$",
-        "headers": {
-          "content-type": "application/wasm",
-          "Cache-Control": "public, max-age=31536000, immutable"
-        },
-        "continue": true
-      },
-      {
-        "src": "/assets/(.*)",
-        "headers": {
-          "Cache-Control": "public, max-age=31536000, immutable"
-        },
-        "continue": true
-      },
       { "handle": "filesystem" },
       {
         "src": "/(.*)",
-        "dest": "/browser/index.html"
+        "dest": "/index.html"
       }
     ]
   }
