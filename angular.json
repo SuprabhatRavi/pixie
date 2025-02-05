@@ -31,7 +31,11 @@
                 "input": "wasm/pkg",
                 "output": "/assets/wasm/"
               },
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -91,7 +95,11 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/styles.scss"
