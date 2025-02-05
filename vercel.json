@@ -14,11 +14,13 @@
       }
     ],
     "routes": [
-      { "handle": "filesystem" },
+      {
+        "src": "/(assets/.*|.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))$",
+        "dest": "/$1"
+      },
       {
         "src": "/(.*)",
         "dest": "/browser/index.html"
       }
     ]
   }
-  
