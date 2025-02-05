@@ -4,10 +4,7 @@ const path = require('path');
 function copyWasmFiles() {
   // Define directories
   const sourceDir = path.join(process.cwd(), 'wasm/pkg');
-  const targetDirs = [
-    path.join(process.cwd(), 'src/assets/wasm'),
-    path.join(process.cwd(), 'dist/pixie/assets/wasm')
-  ];
+  const targetDir = path.join(process.cwd(), 'src/assets/wasm'); // Only ONE target now
 
   // Files to copy
   const filesToCopy = [
@@ -15,33 +12,29 @@ function copyWasmFiles() {
     'image_editor_backend.js'
   ];
 
-  // Create directories if they don't exist
-  targetDirs.forEach(dir => {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-      console.log(`Created directory: ${dir}`);
-    }
-  });
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+    console.log(`Created directory: ${targetDir}`);
+  }
 
-  // Copy files to all target directories
-  targetDirs.forEach(targetDir => {
-    filesToCopy.forEach(file => {
-      const sourcePath = path.join(sourceDir, file);
-      const targetPath = path.join(targetDir, file);
-      
-      try {
-        if (fs.existsSync(sourcePath)) {
-          fs.copyFileSync(sourcePath, targetPath);
-          console.log(`Copied ${file} to ${targetDir}`);
-        } else {
-          console.error(`Source file not found: ${sourcePath}`);
-          process.exit(1);
-        }
-      } catch (error) {
-        console.error(`Error copying ${file} to ${targetDir}:`, error);
+  // Copy files
+  filesToCopy.forEach(file => {
+    const sourcePath = path.join(sourceDir, file);
+    const targetPath = path.join(targetDir, file);
+
+    try {
+      if (fs.existsSync(sourcePath)) {
+        fs.copyFileSync(sourcePath, targetPath);
+        console.log(`Copied ${file} to ${targetDir}`);
+      } else {
+        console.error(`Source file not found: ${sourcePath}`);
         process.exit(1);
       }
-    });
+    } catch (error) {
+      console.error(`Error copying ${file} to ${targetDir}:`, error);
+      process.exit(1);
+    }
   });
 
   console.log('WASM files copied successfully!');
