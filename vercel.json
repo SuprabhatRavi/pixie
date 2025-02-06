@@ -1,22 +1,50 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "dist/pixie/browser",
-          "buildCommand": "node vercel-build.js",
-          "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
-          "rustVersion": "stable",
-          "maxLambdaSize": "50mb"
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/pixie/browser",
+        "buildCommand": "node vercel-build.js",
+        "installCommand": "curl -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh && export PATH=$PATH:$HOME/.cargo/bin && npm install",
+        "rustVersion": "stable",
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/browser/assets/$1"
+    },
+    {
+      "src": "/(.*)\\.(?:js|css|json|png|jpg|jpeg|gif|ico|wasm)$",
+      "dest": "/browser/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/browser/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
         }
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/browser"
-      }
-    ]
-  }
+      ]
+    },
+    {
+      "source": "/(.*)\\.wasm",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/wasm"
+        }
+      ]
+    }
+  ]
+}
