@@ -13,18 +13,18 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/browser/assets/$1"
+      "source": "/assets/(.*)",
+      "destination": "/browser/assets/$1"
     },
     {
-      "src": "/(.*)\\.(?:js|css|json|png|jpg|jpeg|gif|ico|wasm)$",
-      "dest": "/browser/$1"
+      "source": "/(.*)\\.(?:js|css|json|png|jpg|jpeg|gif|ico|wasm)$",
+      "destination": "/browser/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/browser/index.html"
+      "source": "/(.*)",
+      "destination": "/browser/index.html"
     }
   ],
   "headers": [
