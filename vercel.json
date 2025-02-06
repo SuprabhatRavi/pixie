@@ -15,10 +15,6 @@
     ],
     "routes": [
       {
-        "src": "/browser/(.*)",
-        "dest": "/browser/$1"
-      },
-      {
         "handle": "filesystem"
       },
       {
@@ -27,7 +23,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "/browser/index.html"
+        "dest": "/browser"
       }
     ]
   }
