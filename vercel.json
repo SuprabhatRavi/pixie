@@ -15,12 +15,12 @@
   ],
   "rewrites": [
     {
-      "source": "/assets/(.*)",
-      "destination": "/browser/assets/$1"
+      "source": "/assets/:path*",
+      "destination": "/browser/assets/:path*"
     },
     {
-      "source": "/(.*)\\.(?:js|css|json|png|jpg|jpeg|gif|ico|wasm)$",
-      "destination": "/browser/$1"
+      "source": "/:path*",
+      "destination": "/browser/:path*"
     },
     {
       "source": "/(.*)",
